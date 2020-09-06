@@ -6,13 +6,7 @@
  * @param {*} next 
  */
 const checkInputCompleteness = (req, res, next) => {
-<<<<<<< HEAD
-  let { body } = req;
-  console.log(JSON.stringify(req.body))
-  if (body.key && (body.plain || body.cipher)) {
-=======
   if (req.body.key && (req.body.plain || req.body.cipher)) {
->>>>>>> b6b873495a5d589c99614769b8ad9e14c6da7852
     next();
   } else {
     console.log()
