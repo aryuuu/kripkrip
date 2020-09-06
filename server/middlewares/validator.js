@@ -6,9 +6,12 @@
  * @param {*} next 
  */
 const checkInputCompleteness = (req, res, next) => {
-  if (req.key && (req.plain || req.cipher)) {
+  let { body } = req;
+  console.log(JSON.stringify(req.body))
+  if (body.key && (body.plain || body.cipher)) {
     next();
   } else {
+    console.log()
     return res.status(400).json({
       message: 'Missing inputs'
     })
