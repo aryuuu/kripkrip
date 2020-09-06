@@ -55,10 +55,14 @@ r.post('/super/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
 r.post('/affine/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encrypt } = require('../cipher/affine');
+  cipherText = encrypt(req.body.plain, req.body.key, req.body.key_m, res);
+  res.send({ message: cipherText });
 });
 r.post('/affine/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decrypt } = require('../cipher/affine');
+  plainText = decrypt(req.body.cipher, req.body.key, req.body.key_m, res);
+  res.send({ message: plainText });
 });
 r.post('/hill/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
