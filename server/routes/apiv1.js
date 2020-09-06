@@ -7,12 +7,12 @@ r.post('/test', (req, res) => {
   res.send({ message: req.body.plain });
 })
 r.post('/vigenere/enc', checkInputCompleteness, (req, res) => {
-  const { encrypt } = require('../crypt/vigenere');
+  const { encrypt } = require('../cypher/vigenere');
   encryptedText = encrypt(req.body.plain, req.body.key, false);
   res.send({ message: encryptedText });
 });
 r.post('/vigenere/dec', checkInputCompleteness, (req, res) => {
-  const { decrypt } = require('../crypt/vigenere');
+  const { decrypt } = require('../cypher/vigenere');
   decryptedText = decrypt(req.body.chiper, req.body.key, false);
   res.send({ message: decryptedText });
 });
@@ -23,12 +23,12 @@ r.post('/full-vigenere/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
 r.post('/auto-key-vigenere/enc', checkInputCompleteness, (req, res) => {
-  const { encryptAutoKey } = require('../crypt/vigenere');
+  const { encryptAutoKey } = require('../cypher/vigenere');
   encryptedText = encryptAutoKey(req.body.plain, req.body.key, false);
   res.send({ message: encryptedText });
 });
 r.post('/auto-key-vigenere/dec', checkInputCompleteness, (req, res) => {
-  const { decryptAutoKey } = require('../crypt/vigenere');
+  const { decryptAutoKey } = require('../cypher/vigenere');
   decryptedText = decryptAutoKey(req.body.chiper, req.body.key, false);
   res.send({ message: decryptedText });
 });
