@@ -3,14 +3,18 @@ const r = express.Router();
 
 const { checkInputCompleteness } = require('../middlewares/validator');
 
-r.get('/test', (req, res) => {
-  res.send({ message: 'bite my shiny metal ass'});
+r.post('/test', (req, res) => {
+  res.send({ message: req.body.plain });
 })
 r.post('/vigenere/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encrypt } = require('../crypt/vigenere');
+  encryptedText = encrypt(req.body.plain, req.body.key, false);
+  res.send({ message: encryptedText });
 });
 r.post('/vigenere/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decrypt } = require('../crypt/vigenere');
+  decryptedText = decrypt(req.body.chiper, req.body.key, false);
+  res.send({ message: decryptedText });
 });
 r.post('/full-vigenere/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
@@ -18,11 +22,15 @@ r.post('/full-vigenere/enc', checkInputCompleteness, (req, res) => {
 r.post('/full-vigenere/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
-r.post('/running-vigenere/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+r.post('/auto-key-vigenere/enc', checkInputCompleteness, (req, res) => {
+  const { encryptAutoKey } = require('../crypt/vigenere');
+  encryptedText = encryptAutoKey(req.body.plain, req.body.key, false);
+  res.send({ message: encryptedText });
 });
-r.post('/running-vigenere/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+r.post('/auto-key-vigenere/dec', checkInputCompleteness, (req, res) => {
+  const { decryptAutoKey } = require('../crypt/vigenere');
+  decryptedText = decryptAutoKey(req.body.chiper, req.body.key, false);
+  res.send({ message: decryptedText });
 });
 r.post('/ext-vigenere/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
