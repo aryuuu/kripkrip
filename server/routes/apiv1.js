@@ -32,10 +32,10 @@ r.post('/auto-key-vigenere/dec', checkInputCompleteness, (req, res) => {
   decryptedText = decryptAutoKey(req.body.cipher, req.body.key, false);
   res.send({ message: decryptedText });
 });
-r.post('/ext-vigenere/enc', checkInputCompleteness, (req, res) => {
+r.post('/extended-vigenere/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
-r.post('/ext-vigenere/dec', checkInputCompleteness, (req, res) => {
+r.post('/extended-vigenere/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
 r.post('/playfair/enc', checkInputCompleteness, (req, res) => {
@@ -48,10 +48,10 @@ r.post('/playfair/dec', checkInputCompleteness, (req, res) => {
   plainText = decrypt(req.body.cipher, req.body.key, false);
   res.send({ message: plainText });
 });
-r.post('/super/enc', checkInputCompleteness, (req, res) => {
+r.post('/super-enkripsi/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
-r.post('/super/dec', checkInputCompleteness, (req, res) => {
+r.post('/super-enkripsi/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
 r.post('/affine/enc', checkInputCompleteness, (req, res) => {
