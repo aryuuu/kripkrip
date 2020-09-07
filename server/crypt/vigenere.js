@@ -110,11 +110,31 @@ function decryptAutoKey(text, key, binary) {
     return decryptedText;
 }
 
+const encryptFull = (text, key) => {
+
+}
+
+const decryptFull = (text, key) => {
+
+}
+
+const encryptExtended = (stream, key, binary) => {
+
+}
+
+const decryptExtended = (stream, key, binary) => {
+
+}
+
 module.exports = {
     
     encrypt,
     decrypt,
     encryptAutoKey,
-    decryptAutoKey
+    decryptAutoKey,
+    encryptFull,
+    decryptFull,
+    encryptExtended,
+    decryptExtended
     
 };
