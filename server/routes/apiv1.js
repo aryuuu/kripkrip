@@ -1,5 +1,8 @@
 const express = require('express');
+const multer = require('multer');
 const r = express.Router();
+
+const upload = multer().single('file');
 
 const { checkInputCompleteness } = require('../middlewares/validator');
 
@@ -32,10 +35,11 @@ r.post('/auto-key-vigenere/dec', checkInputCompleteness, (req, res) => {
   decryptedText = decryptAutoKey(req.body.cipher, req.body.key, false);
   res.send({ message: decryptedText });
 });
-r.post('/extended-vigenere/enc', checkInputCompleteness, (req, res) => {
+r.post('/extended-vigenere/enc', upload, (req, res) => {
+  console.log(JSON.stringify(req.file));
   res.send({ message: 'bite my shiny metal ass' });
 });
-r.post('/extended-vigenere/dec', checkInputCompleteness, (req, res) => {
+r.post('/extended-vigenere/dec', upload, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
 });
 r.post('/playfair/enc', checkInputCompleteness, (req, res) => {
@@ -49,10 +53,26 @@ r.post('/playfair/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: plainText });
 });
 r.post('/super-enkripsi/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encrypt } = require('../cipher/super');
+  const { body } = req;
+  if (!body.alphaTable || body.alphaTable.length !== 26) {
+    return res.status(400).json({ message: 'Missing alphabet table'});
+  }
+
+  let cipherText = encrypt(body.plain, body.key, body.alphaTable);
+
+  res.send({ message: cipherText });
 });
 r.post('/super-enkripsi/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decrypt } = require('../cipher/super');
+  const { body } = req;
+  if (!body.alphaTable || body.alphaTable.length !== 26) {
+    return res.status(400).json({ message: 'Missing alphabet table'});
+  }
+
+  let plainText = decrypt(body.cipher, body.key, body.alphaTable);
+
+  res.send({ message: plainText });
 });
 r.post('/affine/enc', checkInputCompleteness, (req, res) => {
   const { encrypt } = require('../cipher/affine');
