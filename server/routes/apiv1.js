@@ -56,19 +56,23 @@ r.post('/super-enkripsi/dec', checkInputCompleteness, (req, res) => {
 });
 r.post('/affine/enc', checkInputCompleteness, (req, res) => {
   const { encrypt } = require('../cipher/affine');
-  cipherText = encrypt(req.body.plain, req.body.key, req.body.key_m, res);
+  cipherText = encrypt(req.body.plain, req.body.key, req.body.key_m);
   res.send({ message: cipherText });
 });
 r.post('/affine/dec', checkInputCompleteness, (req, res) => {
   const { decrypt } = require('../cipher/affine');
-  plainText = decrypt(req.body.cipher, req.body.key, req.body.key_m, res);
+  plainText = decrypt(req.body.cipher, req.body.key, req.body.key_m);
   res.send({ message: plainText });
 });
 r.post('/hill/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encrypt } = require('../cipher/hill');
+  cipherText = encrypt(req.body.plain, req.body.key, req.body.key_matrix);
+  res.send({ message: cipherText });
 });
 r.post('/hill/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decrypt } = require('../cipher/hill');
+  plainText = decrypt(req.body.cipher, req.body.key, req.body.key_matrix);
+  res.send({ message: plainText });
 });
 r.post('/enigma/enc', checkInputCompleteness, (req, res) => {
   res.send({ message: 'bite my shiny metal ass' });
