@@ -20,7 +20,7 @@ function calculateDecrypt(id, m, b) {
     return mod%26;
 }
 
-function encrypt(text, key_b, key_m, res) {
+function encrypt(text, key_b, key_m) {
     if (!key_m) {
         return 'Missing input: key_m';
     }
@@ -46,7 +46,7 @@ function encrypt(text, key_b, key_m, res) {
     return encryptedText;
 }
 
-function decrypt(text, key_b, key_m, res) {
+function decrypt(text, key_b, key_m) {
     if (!key_m) {
         return 'Missing input: key_m';
     }
