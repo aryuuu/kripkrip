@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 const Key = (props) => {
   const {
     cipher,
-    keyHook,
+    setKey,
     alphaTable,
     m,
     b
@@ -36,11 +36,19 @@ const Key = (props) => {
     alphaTable(a.join(''));
   }
 
+  // useEffect(updateKey, [keyVal]);
+
   useEffect(() => {
-    keyHook(keyVal);
+    alphaTable(alphabet);
+  }, []);
+
+  useEffect(() => {
+    console.log('key just got updated');
+    setKey(keyVal);
   }, [keyVal]);
 
   useEffect(() => {
+    console.log('m and or b updated')
     m(mVal);
     b(bVal);
   }, [mVal, bVal]);
@@ -52,7 +60,7 @@ const Key = (props) => {
           type="text" 
           placeholder="key"
           value={keyVal}
-          onInput={e => setKeyVal(e.target.value)}/>
+          onChange={e => setKeyVal(e.target.value)}/>
         <h5 className="display-5 text-center mb-2">
           Alphabet Table
         </h5>
@@ -98,7 +106,10 @@ const Key = (props) => {
   } else {
     return (
       <>
-        <input className="form-control mt-2 mb-3" type="text" placeholder="key"/>
+        <input className="form-control mt-2 mb-3" 
+          type="text" 
+          placeholder="key"
+          onChange={e => setKeyVal(e.target.value)}/>
       </>
     );
   }

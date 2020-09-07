@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 import Key from './Key';
 
@@ -13,13 +13,12 @@ const Krip = () => {
   const [file, setFile] = useState('');
   const [filename, setFilename] = useState('Choose file');
 
-  const [key, setKey] = useState('');
+  const [keyVal, setKeyVal] = useState('');
   const [alphaTable, setAlphaTable] = useState('');
   const [m, setM] = useState('');
   const [b, setB] = useState('');
 
   const handleSwitch = (e) => {
-    console.log(e.target.checked);
     setIsEncrypt(e.target.checked);
   }
 
@@ -34,6 +33,7 @@ const Krip = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("submit");
     console.log(cipher);
     console.log(key);
     console.log(inputText);
@@ -44,25 +44,27 @@ const Krip = () => {
     console.log(file);
     console.log(filename);
 
-
-
     let body = {};
+    let formData = new FormData();
+    formData.append('test', '1');
+    console.log("formdata:")
+    console.log(JSON.stringify(formData));
+    console.log(formData);
 
     switch (cipher) {
       case "full-vigenere":
-        body['key'] = key;
+        body['key'] = keyVal;
         body['alphaTable'] = alphaTable;
         body[`${isEncrypt ? 'plain' : 'cipher'}`] = inputText;
         break;
       case "extended-vigenere":
         if (file) {
-          body = new FormData();
-          body.append('key', key);
-          body.append('alphaTable', alphaTable);
-          body.append('file', file);
+          formData.append('key', keyVal);
+          formData.append('file', file);
+          console.log('about to upload a file');
+          console.log(JSON.stringify(formData));
         } else {
-          body['key'] = key;
-          body['alphaTable'] = alphaTable;
+          body['key'] = keyVal;
           body[`${isEncrypt ? 'plain' : 'cipher'}`] = inputText;
         }
         break;
@@ -73,9 +75,20 @@ const Krip = () => {
         break;
 
       default:
-        body['key'] = key;
+        body['key'] = keyVal;
         body[`${isEncrypt ? 'plain' : 'cipher'}`] = inputText;
         break;
+    }
+
+    if (cipher ==='extended-vigenere' && file) {
+      console.log('about to upload a file');
+      body = formData;
+    }
+
+    console.log(`body ${JSON.stringify(body)}`)
+    console.log(JSON.stringify(formData));
+    for (var key of formData.entries()) {
+      console.log(key[0] + ', ' + key[1]);
     }
 
     // request goes here
@@ -109,26 +122,25 @@ const Krip = () => {
             className="custom-control-label" 
             htmlFor="encryptSwitch">
               {isEncrypt ? 'Encrypt' : 'Decrypt'}
-              {/* {switchLabel} */}
           </label>
         </div>
 
         {/* cipher dropdown */}
         <div class="dropdown">
-          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-info dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {cipher}
-          </a>
+          </button>
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" onClick={e => setCipher('vigenere')}>vigenere</a>
-            <a class="dropdown-item" onClick={e => setCipher('full-vigenere')}>full-vigenere</a>
-            <a class="dropdown-item" onClick={e => setCipher('autokey-vigenere')}>autokey-vigenere</a>
-            <a class="dropdown-item" onClick={e => setCipher('extended-vigenere')}>extended-vigenere</a>
-            <a class="dropdown-item" onClick={e => setCipher('playfair')}>playfair</a>
-            <a class="dropdown-item" onClick={e => setCipher('super-enkripsi')}>super-enkripsi</a>
-            <a class="dropdown-item" onClick={e => setCipher('affine')}>affine</a>
-            <a class="dropdown-item" onClick={e => setCipher('hill')}>hill</a>
-            <a class="dropdown-item" onClick={e => setCipher('enigma')}>enigma</a>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('vigenere')}>vigenere</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('full-vigenere')}>full-vigenere</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('auto-key-vigenere')}>auto-key-vigenere</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('extended-vigenere')}>extended-vigenere</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('playfair')}>playfair</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('super-enkripsi')}>super-enkripsi</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('affine')}>affine</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('hill')}>hill</button>
+            <button class="dropdown-item" type="button" onClick={e => setCipher('enigma')}>enigma</button>
           </div>
         </div>
 
@@ -136,7 +148,7 @@ const Krip = () => {
         <h5 className="display-5 text-center mb-2">
           Key
         </h5>
-        <Key cipher={cipher} keyHook={setKey} m={setM} b={setB} alphaTable={setAlphaTable}/>
+        <Key cipher={cipher} setKey={setKeyVal} m={setM} b={setB} alphaTable={setAlphaTable}/>
         {/* <input className="form-control mt-2 mb-3" type="text"/> */}
 
         <div className="row mb-5">
