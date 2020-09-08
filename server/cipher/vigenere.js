@@ -6,9 +6,10 @@
  * @param {*} key 
  * @param {boolean} binary 
  */
-function encrypt(text, key, binary) {
+function encrypt(text, key) {
   key = key.toUpperCase();
-  if (!binary) text = text.toUpperCase();
+  text = text.toUpperCase();
+  text = text.split(' ').join('');
 
   keyCounter = 0;
   encryptedText = '';
@@ -18,7 +19,7 @@ function encrypt(text, key, binary) {
       if (keyCounter >= key.length) keyCounter = 0;
 
       encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
-      if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
+      encryptedLetter = (encryptedLetter - 65) % 26 + 65;
 
       encryptedText += String.fromCharCode(encryptedLetter);
 
@@ -30,9 +31,10 @@ function encrypt(text, key, binary) {
 
 }
 
-function decrypt(text, key, binary) {
+function decrypt(text, key) {
   key = key.toUpperCase();
-  if (!binary) text = text.toUpperCase();
+  text = text.toUpperCase();
+  text = text.split(' ').join('');
 
   keyCounter = 0;
   decryptedText = '';
@@ -42,8 +44,8 @@ function decrypt(text, key, binary) {
       if (keyCounter >= key.length) keyCounter = 0;
 
       decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
-      if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
-      else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
+      if (decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
+      else decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
 
       decryptedText += String.fromCharCode(decryptedLetter);
 
@@ -63,9 +65,10 @@ function decrypt(text, key, binary) {
  * @param {*} key 
  * @param {boolean} binary 
  */
-function encryptAutoKey(text, key, binary) {
+function encryptAutoKey(text, key) {
   key = key.toUpperCase();
-  if (!binary) text = text.toUpperCase();
+  text = text.toUpperCase();
+  text = text.split(' ').join('');
 
   if (key.length < text.length) key += text.slice(0, (text.length - key.length));
 
@@ -75,7 +78,7 @@ function encryptAutoKey(text, key, binary) {
   while (text.length != 0) {
     if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
       encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
-      if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
+      encryptedLetter = (encryptedLetter - 65) % 26 + 65;
 
       encryptedText += String.fromCharCode(encryptedLetter);
 
@@ -89,7 +92,8 @@ function encryptAutoKey(text, key, binary) {
 
 function decryptAutoKey(text, key, binary) {
   key = key.toUpperCase();
-  if (!binary) text = text.toUpperCase();
+  text = text.toUpperCase();
+  text = text.split(' ').join('');
 
   keyCounter = 0;
   keyFromPlainText = false;
@@ -105,8 +109,8 @@ function decryptAutoKey(text, key, binary) {
       if (!keyFromPlainText) decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
       else decryptedLetter = text.charCodeAt(0) - (decryptedText.charCodeAt(keyCounter) - 65);
 
-      if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
-      else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
+      if (decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
+      else decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
 
       decryptedText += String.fromCharCode(decryptedLetter);
 
@@ -120,6 +124,7 @@ function decryptAutoKey(text, key, binary) {
 
 const encryptFull = (text, key, alphaTable) => {
   text = text.toUpperCase();
+  text = text.split(' ').join('');
   key = key.toUpperCase();
   alphaTable = alphaTable.toUpperCase();
 
@@ -147,6 +152,7 @@ const encryptFull = (text, key, alphaTable) => {
 
 const decryptFull = (text, key, alphaTable) => {
   text = text.toUpperCase();
+  text = text.split(' ').join('');
   key = key.toUpperCase();
   alphaTable = alphaTable.toUpperCase();
 
