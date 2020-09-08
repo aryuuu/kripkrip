@@ -148,11 +148,15 @@ r.post('/hill/dec', checkInputCompleteness, (req, res) => {
 });
 
 r.post('/enigma/enc', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encrypt } = require('../cipher/enigma');
+  cipherText = encrypt(req.body.plain, req.body.key);
+  res.send({ message: cipherText });
 });
 
 r.post('/enigma/dec', checkInputCompleteness, (req, res) => {
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decrypt } = require('../cipher/enigma');
+  plainText = decrypt(req.body.cipher, req.body.key);
+  res.send({ message: plainText });
 });
 
 
