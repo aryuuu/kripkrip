@@ -30,7 +30,7 @@ function createKey(key) {
 function encrypt(text, key, binary) {
     matricesKey = createKey(key);
     text = text.toUpperCase();
-    encryptedText = '';
+    text = text.split(' ').join('');
 
     // process text
     text = text.split('J').join('I');
@@ -84,6 +84,7 @@ function encrypt(text, key, binary) {
 function decrypt(text, key, binary) {
     matricesKey = createKey(key);
     text = text.toUpperCase();
+    text = text.split(' ').join('');
     decryptedText = '';
 
     // decrypt

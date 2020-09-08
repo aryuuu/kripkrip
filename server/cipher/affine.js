@@ -37,6 +37,7 @@ function encrypt(text, key_b, key_m) {
     }
     
     text = text.toUpperCase();
+    text = text.split(' ').join('');
     encryptedText = '';
 
     for (var i=0; i<text.length; i++) {
@@ -62,6 +63,7 @@ function decrypt(text, key_b, key_m) {
     }
     
     text = text.toUpperCase();
+    text = text.split(' ').join('');
     decryptedText = '';
 
     for (var i=0; i<text.length; i++) {

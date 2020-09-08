@@ -26,6 +26,9 @@ function encrypt(text, key) {
         if (parseInt(key[i])>8 || parseInt(key[i])<1) return 'Wrong input format';
     }
 
+    text = text.toUpperCase();
+    text = text.split(' ').join('');
+
     rotor2Counter = 0; rotor3Counter = 0;
     ring1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
     ring2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
@@ -82,6 +85,9 @@ function decrypt(text, key) {
     for (var i=0; i<3; i++) {
         if (parseInt(key[i])>8 || parseInt(key[i])<1) return 'Wrong input format';
     }
+
+    text = text.toUpperCase();
+    text = text.split(' ').join('');
 
     rotor2Counter = 0; rotor3Counter = 0;
     ring1 = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];

@@ -91,6 +91,8 @@ function decrypt(text, m, arr) {
         matrices = math.mod(math.multiply(n, comatrix),26);
     }
     
+    text = text.toUpperCase();
+    text = text.split(' ').join('');
     decryptedText = '';
 
     for(var i=0; i<text.length-1; i+=m) {
