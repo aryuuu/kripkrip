@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 import Key from './Key';
 
@@ -34,22 +34,21 @@ const Krip = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submit");
-    console.log(cipher);
-    console.log(key);
-    console.log(inputText);
-    console.log(resultText);
-    console.log(m);
-    console.log(b);
-    console.log(alphaTable);
+    // console.log(cipher);
+    // console.log(keyVal);
+    // console.log(inputText);
+    // console.log(m);
+    // console.log(b);
+    // console.log(alphaTable);
     console.log(file);
     console.log(filename);
 
     let body = {};
     let formData = new FormData();
-    formData.append('test', '1');
-    console.log("formdata:")
-    console.log(JSON.stringify(formData));
-    console.log(formData);
+    // formData.append('test', '1');
+    // console.log("formdata:")
+    // console.log(JSON.stringify(formData));
+    // console.log(formData);
 
     switch (cipher) {
       case "full-vigenere":
@@ -61,8 +60,6 @@ const Krip = () => {
         if (file) {
           formData.append('key', keyVal);
           formData.append('file', file);
-          console.log('about to upload a file');
-          console.log(JSON.stringify(formData));
         } else {
           body['key'] = keyVal;
           body[`${isEncrypt ? 'plain' : 'cipher'}`] = inputText;
@@ -80,29 +77,38 @@ const Krip = () => {
         break;
     }
 
-    if (cipher ==='extended-vigenere' && file) {
-      console.log('about to upload a file');
+    if (cipher === 'extended-vigenere' && file) {
+      // console.log('about to upload a file');
       body = formData;
+      // for (var key of body.entries()) {
+      //   console.log(key[0] + ', ' + key[1]);
+      // }
     }
 
-    console.log(`body ${JSON.stringify(body)}`)
-    console.log(JSON.stringify(formData));
-    for (var key of formData.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-    }
+    // console.log(`body ${JSON.stringify(body)}`);
+    // for (var key of body.entries()) {
+    //   console.log(key[0] + ', ' + key[1]);
+    // }
 
     // request goes here
+    let url = `${apiUrl}/${cipher}`;
+    if (cipher === 'extended-vigenere' && file) {
+      url += '/file';
+    }
+    url += `/${isEncrypt ? 'enc' : 'dec'}`;
+
     try {
-      // const res = await axios.post(
-      //   `${apiUrl}/${cipher}/${isEncrypt ? 'enc' : 'dec'}`,
-      //   body,
-      //   {
-      //     headers: {
-      //       'Accept': 'application/json',
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      //   }
-      //   )
+      const res = await axios.post(
+        url,
+        body,
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': cipher === 'extended-vigenere' && file ? 'multipart/form-data' : 'application/json'  
+          }
+        }
+      )
+      setResultText(res.data && res.data.message ? res.data.message : '');
     } catch (err) {
 
     }
@@ -113,15 +119,15 @@ const Krip = () => {
       <form onSubmit={handleSubmit}>
         {/* switch */}
         <div className="custom-control custom-switch mb-3">
-          <input type="checkbox" 
+          <input type="checkbox"
             defaultChecked={true}
-            className="custom-control-input" 
+            className="custom-control-input"
             id="encryptSwitch"
-            onChange={handleSwitch}/>
-          <label 
-            className="custom-control-label" 
+            onChange={handleSwitch} />
+          <label
+            className="custom-control-label"
             htmlFor="encryptSwitch">
-              {isEncrypt ? 'Encrypt' : 'Decrypt'}
+            {isEncrypt ? 'Encrypt' : 'Decrypt'}
           </label>
         </div>
 
@@ -148,7 +154,7 @@ const Krip = () => {
         <h5 className="display-5 text-center mb-2">
           Key
         </h5>
-        <Key cipher={cipher} setKey={setKeyVal} m={setM} b={setB} alphaTable={setAlphaTable}/>
+        <Key cipher={cipher} setKey={setKeyVal} m={setM} b={setB} alphaTable={setAlphaTable} />
         {/* <input className="form-control mt-2 mb-3" type="text"/> */}
 
         <div className="row mb-5">
@@ -157,10 +163,10 @@ const Krip = () => {
             <h5 className="display-5 text-center mb-2">
               Input
             </h5>
-            <textarea 
+            <textarea
               value={inputText}
               onChange={handleInput}
-              className="form-control" 
+              className="form-control"
               placeholder="Enter your plaintext or ciphertext here...">
 
             </textarea>
@@ -170,28 +176,34 @@ const Krip = () => {
             <h5 className="display-5 text-center mb-2">
               Result
             </h5>
-            <textarea 
-              className="form-control" 
+            <textarea
+              className="form-control"
               placeholder="Result goes here..."
+              value={resultText}
               readOnly>
             </textarea>
           </div>
         </div>
 
-        <div className="row mt-2">
-          <div className="col">
-            {/* file upload */}
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" onChange={handleFile}/>
-              <label class="custom-file-label" for="customFile">{filename}</label>
-            </div>
-            
-          </div>
-          <div className="col">
-            {/* response file */}
+        {
+          cipher === 'extended-vigenere'
+            ? (
+              <div className="row mt-2" >
+                <div className="col">
+                  {/* file upload */}
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" onChange={handleFile} />
+                    <label class="custom-file-label" for="customFile">{filename}</label>
+                  </div>
 
-          </div>
-        </div>
+                </div>
+                <div className="col">
+                  <button type="button" className="btn btn-warning" onClick={e => { setFile(''); setFilename('Choose file') }}>Clear</button>
+                </div>
+              </div>
+            )
+            : null
+        }
         {/* submit */}
         <button type="submit" className="btn btn-primary mt-5">
           {isEncrypt ? 'Encrypt' : 'Decrypt'}

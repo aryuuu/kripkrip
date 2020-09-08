@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
+import CopyToClipBoard from 'react-copy-to-clipboard';
 // hooks
 
-
 // const [alphabetTable, setAlphabetTable] = useState(alphabet);
-
 
 const Key = (props) => {
   const {
@@ -17,11 +15,11 @@ const Key = (props) => {
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const [keyVal, setKeyVal] = useState('');
-  const [alphabetTable, setAlphabetTable] = useState(alphabet);
+  const [alphabetTable, setAlphabetTable] = useState('');
   const [mVal, setMVal] = useState(0);
   const [bVal, setBVal] = useState(0);
 
-  const randomizeTable = () => {
+  const getRandomAlphabet = () => {
     let a = alphabet.split('');
     const n = a.length;
 
@@ -31,24 +29,32 @@ const Key = (props) => {
       a[i] = a[j];
       a[j] = tmp;
     }
-    // return a.join('')
-    setAlphabetTable(a.join(''));
-    alphaTable(a.join(''));
+    return a.join('');
   }
 
-  // useEffect(updateKey, [keyVal]);
+  const randomizeTable = () => {
+    let result = '';
+    for (let i = 0; i < 26; i++) {
+      if (i > 0) result += ',';
+      result += getRandomAlphabet();
+    }
+    setAlphabetTable(result);
+    // alphaTable(result);
+  }
 
   useEffect(() => {
     alphaTable(alphabet);
   }, []);
 
   useEffect(() => {
-    console.log('key just got updated');
+    alphaTable(alphabetTable);
+  }, [alphabetTable]);
+
+  useEffect(() => {
     setKey(keyVal);
   }, [keyVal]);
 
   useEffect(() => {
-    console.log('m and or b updated')
     m(mVal);
     b(bVal);
   }, [mVal, bVal]);
@@ -56,11 +62,11 @@ const Key = (props) => {
   if (cipher === 'full-vigenere') {
     return (
       <>
-        <input className="form-control mt-2 mb-3" 
-          type="text" 
+        <input className="form-control mt-2 mb-3"
+          type="text"
           placeholder="key"
           value={keyVal}
-          onChange={e => setKeyVal(e.target.value)}/>
+          onChange={e => setKeyVal(e.target.value)} />
         <h5 className="display-5 text-center mb-2">
           Alphabet Table
         </h5>
@@ -70,12 +76,46 @@ const Key = (props) => {
           </div>
           <div className="col">
             <button type="button" className="btn btn-dark mt-2 mb-3" onClick={randomizeTable}>
-              Random
+              Randomize
             </button>
+            {/* <CopyToClipBoard text={alphabetTable} onCopy={alert("Copied")}>
+              <button className="btn ml-3">
+                <i class="far fa-copy"></i>
+              </button>
+            </CopyToClipBoard> */}
           </div>
         </div>
       </>
     );
+
+  } else if (cipher === 'super-enkripsi') {
+    return (
+      <>
+        <input className="form-control mt-2 mb-3"
+          type="text"
+          placeholder="key"
+          value={keyVal}
+          onChange={e => setKeyVal(e.target.value)} />
+        <h5 className="display-5 text-center mb-2">
+          Alphabet Table
+        </h5>
+        <div className="row">
+          <div className="col">
+            <input className="form-control mt-2 mb-3" type="text" value={alphabetTable} />
+          </div>
+          <div className="col">
+            <button type="button" className="btn btn-dark mt-2 mb-3" onClick={e => setAlphabetTable(getRandomAlphabet)}>
+              Randomize
+            </button>
+            {/* <CopyToClipBoard text={alphabetTable} onCopy={alert("Copied")}>
+              <button type="button" className="btn ml-3">
+                <i class="far fa-copy"></i>
+              </button>
+            </CopyToClipBoard> */}
+          </div>
+        </div>
+      </>
+    )
 
   } else if (cipher === 'affine') {
     return (
@@ -85,31 +125,31 @@ const Key = (props) => {
             <h5 className="display-5 text-center mb-2">
               M
             </h5>
-            <input className="form-control mt-2 mb-3" 
+            <input className="form-control mt-2 mb-3"
               type="number"
               value={mVal}
-              onInput={e => setMVal(e.target.value)}/>
+              onInput={e => setMVal(e.target.value)} />
           </div>
           <div className="col">
             <h5 className="display-5 text-center mb-2">
               B
             </h5>
-            <input className="form-control mt-2 mb-3" 
+            <input className="form-control mt-2 mb-3"
               type="number"
               value={bVal}
-              onInput={e => setBVal(e.target.value)}/>
+              onInput={e => setBVal(e.target.value)} />
           </div>
         </div>
-        
+
       </>
     );
   } else {
     return (
       <>
-        <input className="form-control mt-2 mb-3" 
-          type="text" 
+        <input className="form-control mt-2 mb-3"
+          type="text"
           placeholder="key"
-          onChange={e => setKeyVal(e.target.value)}/>
+          onChange={e => setKeyVal(e.target.value)} />
       </>
     );
   }
