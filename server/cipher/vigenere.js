@@ -188,11 +188,13 @@ const decryptFull = (text, key, alphaTable) => {
   return result;
 }
 
-const encryptExtended = (stream, key, binary) => {
+const encryptExtended = (stream, key) => {
   key = key.toUpperCase();
-  if (!binary) {
-    stream = stream.split('').map(e => e.charCodeAt(0));
-  }
+  stream = stream.split('').map(e => e.charCodeAt(0));
+
+  // if (!binary) {
+  //   stream = stream.split('').map(e => e.charCodeAt(0));
+  // }
 
   let keyCounter = 0;
   let result = [];
@@ -207,19 +209,21 @@ const encryptExtended = (stream, key, binary) => {
     stream = stream.slice(1);
   }
 
-  if (!binary) {
-    return result.map(e => String.fromCharCode(e)).join('');
-  }
+  // if (!binary) {
+  //   return result.map(e => String.fromCharCode(e)).join('');
+  // }
 
-  return result;
+  return result.map(e => String.fromCharCode(e)).join('');
 
 }
 
-const decryptExtended = (stream, key, binary) => {
+const decryptExtended = (stream, key) => {
   key = key.toUpperCase();
-  if (!binary) {
-    stream = stream.split('').map(e => e.charCodeAt(0));
-  }
+  stream = stream.split('').map(e => e.charCodeAt(0));
+
+  // if (!binary) {
+  //   stream = stream.split('').map(e => e.charCodeAt(0));
+  // }
 
   let keyCounter = 0;
   let result = [];
@@ -237,11 +241,10 @@ const decryptExtended = (stream, key, binary) => {
     stream = stream.slice(1);
     keyCounter++;
   }
-  if (!binary) {
-    return result.map(e => String.fromCharCode(e)).join('');
-  }
-
-  return result;
+  // if (!binary) {
+  // return result.map(e => String.fromCharCode(e)).join('');
+  // }
+  return result.map(e => String.fromCharCode(e)).join('');
 
 }
 

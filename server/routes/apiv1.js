@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
-const r = express.Router();
+const fs = require('fs');
 
+const r = express.Router();
 const upload = multer();
 
 const { checkInputCompleteness } = require('../middlewares/validator');
@@ -76,15 +77,34 @@ r.post('/extended-vigenere/dec', checkInputCompleteness, (req, res) => {
 });
 
 r.post('/extended-vigenere/file/enc', upload.single('file'), (req, res) => {
-  console.log(JSON.stringify(req.file));
-  console.log(req.body);
-  res.send({ message: 'bite my shiny metal ass' });
+  const { encryptExtended } = require('../cipher/vigenere');
+  const { body } = req;
+
+  let encryptedBytes = encryptExtended(req.file.buffer.toString('utf-8'), body.key);
+  let newFilename = req.file.originalname + '.enc';
+  fs.writeFileSync(`./public/tmp/${newFilename}`, encryptedBytes);
+  res.download(`${__dirname}/../public/tmp/${newFilename}`, newFilename);
+  setTimeout(() => {
+    fs.unlinkSync(`./public/tmp/${newFilename}`);
+  }, 600_000)
 });
 
 r.post('/extended-vigenere/file/dec', upload.single('file'), (req, res) => {
-  console.log(JSON.stringify(req.file));
-  console.log(req.body);
-  res.send({ message: 'bite my shiny metal ass' });
+  const { decryptExtended } = require('../cipher/vigenere');
+  const { body } = req;
+  
+  let decryptedBytes = decryptExtended(req.file.buffer.toString('utf-8'), body.key);
+  let newFilename;
+  if (req.file.originalname.slice(-4) === '.enc') {
+    newFilename = req.file.originalname.split('.').slice(0, -1).join('.');
+  } 
+
+  fs.writeFileSync(`./public/tmp/${newFilename}`, decryptedBytes);
+  res.download(`${__dirname}/../public/tmp/${newFilename}`, newFilename);
+
+  setTimeout(() => {
+    fs.unlinkSync(`./public/tmp/${newFilename}`);
+  }, 600_000)
 });
 
 r.post('/playfair/enc', checkInputCompleteness, (req, res) => {
