@@ -42,25 +42,25 @@ function encrypt(text, key) {
 
     for (var i=0; i<text.length; i++) {
         // rotor 1
-        idx1 = ring1.indexOf(text.charAt(i));
-        ec1 = rotor1[idx1];
+        idx1 = ring1[text.charCodeAt(i)-65];
+        ec1 = rotor1.indexOf(idx1);
 
         // rotor 2
-        idx2 = ring2.indexOf(ec1);
-        ec2 = rotor2[idx2];
+        idx2 = ring2[ec1];
+        ec2 = rotor2.indexOf(idx2);
 
         // rotor 3
-        idx3 = ring3.indexOf(ec2);
-        ec3 = rotor3[idx3];
+        idx3 = ring3[ec2];
+        ec3 = rotor3.indexOf(idx3);
 
         // add to encrypted text
-        encryptedText += ec3;
+        encryptedText += String.fromCharCode(ec3+65);
 
         // rotate rotor
         ring3 = rotateRotor(ring3);
         rotor3 = rotateRotor(rotor3);
         rotor3Counter++;
-
+        // return rotor3;
         if (rotor3Counter>25) {
             rotor3Counter = 0;
             ring2 = rotateRotor(ring2);
@@ -101,21 +101,22 @@ function decrypt(text, key) {
     decryptedText = '';
 
     for (var i=0; i<text.length; i++) {
-        idx3 = rotor3.indexOf(text.charAt(i));
-        dc3 = ring3[idx3];
+        idx3 = rotor3[text.charCodeAt(i)-65];
+        dc3 = ring3.indexOf(idx3);
 
-        idx2 = rotor2.indexOf(dc3);
-        dc2 = ring2[idx2];
+        idx2 = rotor2[dc3];
+        dc2 = ring2.indexOf(idx2);
 
-        idx1 = rotor1.indexOf(dc2);
-        dc1 = ring1[idx1];
-
+        idx1 = rotor1[dc2];
+        dc1 = ring1.indexOf(idx1);
+        
         // add to decrypted text
-        decryptedText += dc1;
+        decryptedText += String.fromCharCode(dc1+65);
 
         // rotate rotor
         ring3 = rotateRotor(ring3);
         rotor3 = rotateRotor(rotor3);
+        
         rotor3Counter++;
 
         if (rotor3Counter>25) {
