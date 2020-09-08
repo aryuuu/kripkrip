@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import FileDownload from 'js-file-download';
 
 import Key from './Key';
 
@@ -33,22 +34,9 @@ const Krip = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
-    // console.log(cipher);
-    // console.log(keyVal);
-    // console.log(inputText);
-    // console.log(m);
-    // console.log(b);
-    // console.log(alphaTable);
-    console.log(file);
-    console.log(filename);
 
     let body = {};
     let formData = new FormData();
-    // formData.append('test', '1');
-    // console.log("formdata:")
-    // console.log(JSON.stringify(formData));
-    // console.log(formData);
 
     switch (cipher) {
       case "full-vigenere":
@@ -78,18 +66,8 @@ const Krip = () => {
     }
 
     if (cipher === 'extended-vigenere' && file) {
-      // console.log('about to upload a file');
       body = formData;
-      // for (var key of body.entries()) {
-      //   console.log(key[0] + ', ' + key[1]);
-      // }
     }
-
-    // console.log(`body ${JSON.stringify(body)}`);
-    // for (var key of body.entries()) {
-    //   console.log(key[0] + ', ' + key[1]);
-    // }
-
     // request goes here
     let url = `${apiUrl}/${cipher}`;
     if (cipher === 'extended-vigenere' && file) {
@@ -108,7 +86,19 @@ const Krip = () => {
           }
         }
       )
-      setResultText(res.data && res.data.message ? res.data.message : '');
+      if (cipher === `extended-vigenere` && file) {
+        let newFilename;
+        if (isEncrypt) {
+          newFilename = filename + '.enc';
+        } else {
+          if (filename.slice(-4) === '.enc') {
+            newFilename = filename.slice(0, -4);
+          }
+        }
+        FileDownload(res.data, newFilename);
+      } else {
+        setResultText(res.data && res.data.message ? res.data.message : '');
+      }
     } catch (err) {
 
     }
