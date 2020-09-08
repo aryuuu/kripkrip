@@ -14,15 +14,17 @@ function encrypt(text, key, binary) {
   encryptedText = '';
 
   while (text.length != 0) {
-    if (keyCounter >= key.length) keyCounter = 0;
-
-    encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
-    if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
-
-    encryptedText += String.fromCharCode(encryptedLetter);
-
+    if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
+      if (keyCounter >= key.length) keyCounter = 0;
+  
+      encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
+      if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
+  
+      encryptedText += String.fromCharCode(encryptedLetter);
+  
+      keyCounter += 1;
+    }
     text = text.slice(1);
-    keyCounter += 1;
   }
   return encryptedText;
 
@@ -36,16 +38,18 @@ function decrypt(text, key, binary) {
   decryptedText = '';
 
   while (text.length != 0) {
-    if (keyCounter >= key.length) keyCounter = 0;
-
-    decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
-    if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
-    else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
-
-    decryptedText += String.fromCharCode(decryptedLetter);
-
+    if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
+      if (keyCounter >= key.length) keyCounter = 0;
+  
+      decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
+      if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
+      else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
+  
+      decryptedText += String.fromCharCode(decryptedLetter);
+  
+      keyCounter += 1;
+    }
     text = text.slice(1);
-    keyCounter += 1;
   }
 
   return decryptedText;
@@ -69,14 +73,16 @@ function encryptAutoKey(text, key, binary) {
   encryptedText = '';
 
   while (text.length != 0) {
-
-    encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
-    if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
-
-    encryptedText += String.fromCharCode(encryptedLetter);
+    if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
+      encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
+      if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
+  
+      encryptedText += String.fromCharCode(encryptedLetter);
+  
+      keyCounter += 1;
+    }
 
     text = text.slice(1);
-    keyCounter += 1;
   }
   return encryptedText;
 }
@@ -90,21 +96,23 @@ function decryptAutoKey(text, key, binary) {
   decryptedText = '';
 
   while (text.length != 0) {
-    if (keyCounter >= key.length && !keyFromPlainText) {
-      keyFromPlainText = true;
-      keyCounter = 0;
+    if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
+      if (keyCounter >= key.length && !keyFromPlainText) {
+        keyFromPlainText = true;
+        keyCounter = 0;
+      }
+  
+      if (!keyFromPlainText) decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
+      else decryptedLetter = text.charCodeAt(0) - (decryptedText.charCodeAt(keyCounter) - 65);
+  
+      if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
+      else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
+  
+      decryptedText += String.fromCharCode(decryptedLetter);
+  
+      keyCounter += 1;
     }
-
-    if (!keyFromPlainText) decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
-    else decryptedLetter = text.charCodeAt(0) - (decryptedText.charCodeAt(keyCounter) - 65);
-
-    if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
-    else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
-
-    decryptedText += String.fromCharCode(decryptedLetter);
-
     text = text.slice(1);
-    keyCounter += 1;
   }
 
   return decryptedText;
@@ -169,10 +177,43 @@ const decryptFull = (text, key, alphaTable) => {
 }
 
 const encryptExtended = (stream, key, binary) => {
+  key = key.toUpperCase();
+  if (!binary) {
+    stream = stream.split('').map(e => e.charCodeAt(0));
+  }
+
+  let keyCounter = 0;
+  let result = [];
+
+  while (stream.length > 0) {
+    let encryptedByte = stream[0] + (key.charCodeAt(keyCounter) - 65);
+    encryptedByte = encryptedByte % 256;
+  
+    result.push(encryptedByte);
+    keyCounter++;
+    stream = stream.slice(1);
+  }
+
+  if (!binary) {
+    return result.map(e => String.fromCharCode(e)).join('');
+  }
+
+  return result;
 
 }
 
 const decryptExtended = (stream, key, binary) => {
+  key = key.toUpperCase();
+  if (!binary) {
+    stream = stream.split('').map(e => e.charCodeAt(0));
+  }
+
+  let keyCounter = 0;
+  let result = [];
+
+  while (stream.length > 0) {
+    let decryptedByte = stream[0] ;
+  }
 
 }
 

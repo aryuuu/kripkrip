@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const r = express.Router();
 
-const upload = multer().single('file');
+const upload = multer();
 
 const { checkInputCompleteness } = require('../middlewares/validator');
 
@@ -57,12 +57,33 @@ r.post('/auto-key-vigenere/dec', checkInputCompleteness, (req, res) => {
   res.send({ message: decryptedText });
 });
 
-r.post('/extended-vigenere/enc', upload, (req, res) => {
+r.post('/extended-vigenere/enc', checkInputCompleteness, (req, res) => {
+  const { encryptExtended } = require('../cipher/vigenere');
+  const { body } = req;
+
+  let cipherText = encryptExtended(body.plain, body.key, false);
+
+  res.send({ message: cipherText });
+});
+
+r.post('/extended-vigenere/dec', checkInputCompleteness, (req, res) => {
+  const { decryptExtended } = require('../cipher/vigenere');
+  const { body } = req;
+
+  let plainText = decryptExtended(body.cipher, body.key, false);
+
+  res.send({ message: plainText });
+});
+
+r.post('/extended-vigenere/file/enc', upload.single('file'), (req, res) => {
   console.log(JSON.stringify(req.file));
+  console.log(req.body);
   res.send({ message: 'bite my shiny metal ass' });
 });
 
-r.post('/extended-vigenere/dec', upload, (req, res) => {
+r.post('/extended-vigenere/file/dec', upload.single('file'), (req, res) => {
+  console.log(JSON.stringify(req.file));
+  console.log(req.body);
   res.send({ message: 'bite my shiny metal ass' });
 });
 
