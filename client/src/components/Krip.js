@@ -28,6 +28,9 @@ const Krip = () => {
   }
 
   const handleFile = (e) => {
+    if (e.target.files[0].size > 10 * 1024 * 1024) {
+      return alert('File exceed size limit of 10MB');
+    }
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
   }
