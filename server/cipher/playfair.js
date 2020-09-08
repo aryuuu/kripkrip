@@ -3,7 +3,7 @@
 */
 function createKey(key) {
     key = key.toUpperCase();
-
+    key = key.split(' ').join('');
     matrices = [];
     
     // extract unique character
@@ -28,6 +28,7 @@ function createKey(key) {
 }
 
 function encrypt(text, key, binary) {
+    
     matricesKey = createKey(key);
     text = text.toUpperCase();
     text = text.split(' ').join('');
@@ -45,6 +46,7 @@ function encrypt(text, key, binary) {
     }
     if (newText.length%2==1) newText += 'X';
     text = newText;
+    encryptedText = '';
 
     // encryption
     for (var i=1; i<text.length; i=i+2) {
@@ -83,6 +85,7 @@ function encrypt(text, key, binary) {
 
 function decrypt(text, key, binary) {
     matricesKey = createKey(key);
+    // return text;
     text = text.toUpperCase();
     text = text.split(' ').join('');
     decryptedText = '';
@@ -123,7 +126,8 @@ function decrypt(text, key, binary) {
     // remove X at the end if exist
     if (decryptedText.charAt(decryptedText.length-1)=='X') decryptedText = decryptedText.slice(0,decryptedText.length-1);
     // remove X between 2 identical letter
-    processedText = decryptedText.slice(0,1);
+    processedText = '';
+    processedText += decryptedText.charAt(0);
     for (var i=1; i<decryptedText.length-1; i++) {
         if (decryptedText.charAt(i)=='X' && decryptedText.charAt(i-1)==decryptedText.charAt(i+1)) {
             continue;
