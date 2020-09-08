@@ -16,7 +16,7 @@ function encrypt(text, key, binary) {
   while (text.length != 0) {
     if (text.charCodeAt(0) >= 65 && text.charCodeAt(0) <= 90) {
       if (keyCounter >= key.length) keyCounter = 0;
-  
+      
       encryptedLetter = text.charCodeAt(0) + (key.charCodeAt(keyCounter) - 65);
       if (!binary) encryptedLetter = (encryptedLetter - 65) % 26 + 65;
   
@@ -132,7 +132,7 @@ const encryptFull = (text, key, alphaTable) => {
   while (text.length > 0) {
     if (text.charCodeAt(0) >= 60 && text.charCodeAt(0) <= 90) {
       if (keyCounter >= key.length) keyCounter = 0;
-
+      
       let i = key.charCodeAt(keyCounter) - 65;
       let j = text.charCodeAt(0) - 65;
 
@@ -186,6 +186,7 @@ const encryptExtended = (stream, key, binary) => {
   let result = [];
 
   while (stream.length > 0) {
+    if (keyCounter >= key.length) keyCounter = 0;
     let encryptedByte = stream[0] + (key.charCodeAt(keyCounter) - 65);
     encryptedByte = encryptedByte % 256;
   
@@ -212,8 +213,26 @@ const decryptExtended = (stream, key, binary) => {
   let result = [];
 
   while (stream.length > 0) {
-    let decryptedByte = stream[0] ;
+    if (keyCounter >= key.length) keyCounter = 0;
+
+    let decryptedByte = stream[0] - (key.charCodeAt(keyCounter) - 65);
+    if (decryptedByte < 0) {
+      decryptedByte += 256
+    }
+    // decryptedLetter = text.charCodeAt(0) - (key.charCodeAt(keyCounter) - 65);
+    // if (!binary && decryptedLetter >= 65) decryptedLetter = (decryptedLetter - 65) % 26 + 65;
+    // else if (!binary) decryptedLetter = (decryptedLetter + 26 - 65) % 26 + 65;
+    // decryptedText += String.fromCharCode(decryptedLetter);
+    result.push(decryptedByte);
+
+    stream = stream.slice(1);
+    keyCounter++;
   }
+  if (!binary) {
+    return result.map(e => String.fromCharCode(e)).join('');
+  }
+
+  return result;
 
 }
 
