@@ -88,35 +88,6 @@ const Key = (props) => {
       </>
     );
 
-  } else if (cipher === 'super-enkripsi') {
-    return (
-      <>
-        <input className="form-control mt-2 mb-3"
-          type="text"
-          placeholder="key"
-          value={keyVal}
-          onChange={e => setKeyVal(e.target.value)} />
-        <h5 className="display-5 text-center mb-2">
-          Alphabet Table
-        </h5>
-        <div className="row">
-          <div className="col">
-            <input className="form-control mt-2 mb-3" type="text" value={alphabetTable} />
-          </div>
-          <div className="col">
-            <button type="button" className="btn btn-dark mt-2 mb-3" onClick={e => setAlphabetTable(getRandomAlphabet)}>
-              Randomize
-            </button>
-            {/* <CopyToClipBoard text={alphabetTable} onCopy={alert("Copied")}>
-              <button type="button" className="btn ml-3">
-                <i class="far fa-copy"></i>
-              </button>
-            </CopyToClipBoard> */}
-          </div>
-        </div>
-      </>
-    )
-
   } else if (cipher === 'affine') {
     return (
       <>
