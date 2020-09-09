@@ -120,25 +120,27 @@ r.post('/playfair/dec', checkInputCompleteness, (req, res) => {
 });
 
 r.post('/super-enkripsi/enc', checkInputCompleteness, (req, res) => {
-  const { encrypt } = require('../cipher/super');
+  const { encrypt } = require('../cipher/vigenere');
   const { body } = req;
-  if (!body.alphaTable || body.alphaTable.length !== 26) {
-    return res.status(400).json({ message: 'Missing alphabet table' });
-  }
+  // if (!body.alphaTable || body.alphaTable.length !== 26) {
+  //   return res.status(400).json({ message: 'Missing alphabet table' });
+  // }
 
-  let cipherText = encrypt(body.plain, body.key, body.alphaTable);
+  let cipherText = encrypt(body.plain, body.key);
+  cipherText = cipherText.split('').reverse().join('');
 
   res.send({ message: cipherText });
 });
 
 r.post('/super-enkripsi/dec', checkInputCompleteness, (req, res) => {
-  const { decrypt } = require('../cipher/super');
+  const { decrypt } = require('../cipher/vigenere');
   const { body } = req;
-  if (!body.alphaTable || body.alphaTable.length !== 26) {
-    return res.status(400).json({ message: 'Missing alphabet table' });
-  }
+  // if (!body.alphaTable || body.alphaTable.length !== 26) {
+  //   return res.status(400).json({ message: 'Missing alphabet table' });
+  // }
 
-  let plainText = decrypt(body.cipher, body.key, body.alphaTable);
+  let plainText = body.cipher.split('').reverse().join('');
+  plainText = decrypt(plainText, body.key);
 
   res.send({ message: plainText });
 });
