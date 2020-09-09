@@ -5,7 +5,7 @@ import FileDownload from 'js-file-download';
 import Key from './Key';
 
 const Krip = () => {
-  const apiUrl = 'http://localhost:3001/api/v1'
+  const apiUrl = 'https://api.kripkrip.aryuuu.ninja/api/v1'
 
   const [isEncrypt, setIsEncrypt] = useState(true);
   const [cipher, setCipher] = useState('vigenere');
