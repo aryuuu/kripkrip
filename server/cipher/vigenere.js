@@ -8,6 +8,7 @@
  */
 function encrypt(text, key) {
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   text = text.toUpperCase();
   text = text.split(' ').join('');
 
@@ -33,6 +34,7 @@ function encrypt(text, key) {
 
 function decrypt(text, key) {
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   text = text.toUpperCase();
   text = text.split(' ').join('');
 
@@ -67,6 +69,7 @@ function decrypt(text, key) {
  */
 function encryptAutoKey(text, key) {
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   text = text.toUpperCase();
   text = text.split(' ').join('');
 
@@ -92,6 +95,7 @@ function encryptAutoKey(text, key) {
 
 function decryptAutoKey(text, key, binary) {
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   text = text.toUpperCase();
   text = text.split(' ').join('');
 
@@ -126,6 +130,7 @@ const encryptFull = (text, key, alphaTable) => {
   text = text.toUpperCase();
   text = text.split(' ').join('');
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   alphaTable = alphaTable.toUpperCase();
 
   alphaTable = alphaTable.split(',');
@@ -154,6 +159,7 @@ const decryptFull = (text, key, alphaTable) => {
   text = text.toUpperCase();
   text = text.split(' ').join('');
   key = key.toUpperCase();
+  key = key.split(' ').join('');
   alphaTable = alphaTable.toUpperCase();
 
   alphaTable = alphaTable.split(',');

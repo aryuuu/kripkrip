@@ -21,7 +21,7 @@ function encrypt(text, m, arr) {
     m = parseInt(m);
     if (m!=2 && m!=3) return 'm should be 2 or 3';
 
-    matrices = createMatrixKey(m, trim(arr));
+    matrices = createMatrixKey(m, arr);
     if (!matrices) return 'matrices format incompleted';
     det = math.mod(math.det(math.matrix(matrices)),26);
     // check can be inversed or not
@@ -55,7 +55,7 @@ function decrypt(text, m, arr) {
     m = parseInt(m);
     if (m!=2 && m!=3) return 'm should be 2 or 3';
 
-    matrices = createMatrixKey(m, trim(arr));
+    matrices = createMatrixKey(m, arr);
     if (!matrices) return 'matrices format incompleted';
     det = math.mod(math.det(math.matrix(matrices)),26);
 
